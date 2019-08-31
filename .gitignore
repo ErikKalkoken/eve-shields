@@ -5,3 +5,6 @@
 __pycache__/
 .vscode/
 venv/
+dist/
+build/
+eve_shields.egg-info/
