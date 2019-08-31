@@ -5,7 +5,7 @@ import logging
 
 logging.basicConfig(
     filename='app.log',
-    level=logging.DEBUG,
+    level=logging.WARN,
     format='%(levelname)s %(asctime)s %(message)s'
 )
 
@@ -145,7 +145,8 @@ def _get_nested_dict_value(property: str, stats: dict):
         
 
 @route('/zkb-stats/<entity_type>/<entity_id>/<key>')
-def index(entity_type, entity_id, key):
+def zkb_stats(entity_type, entity_id, key):
+    """endpoint for providing zkb stats related shields"""
     try:
         logger.debug('Starting...')
         
