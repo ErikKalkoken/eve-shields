@@ -11,6 +11,7 @@ logging.basicConfig(
 
 logger = logging.getLogger()
 
+app = default_app()
 
 class Shield:
     """Defines a shield"""
@@ -170,8 +171,6 @@ def zkb_stats(entity_type, entity_id, key):
         response.content_type = 'application/json'
         logger.info("Sending response...")
         return dumps(shield.get_api_dict())
-
-app = default_app()
 
 if __name__ == '__main__':
     run(host='localhost', port=8000)
