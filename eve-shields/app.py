@@ -129,16 +129,16 @@ def _get_nested_dict_value(property: str, stats: dict):
     path = property.split('-')    
     if len(path) <= 2:
         if path[0] not in stats:
-            raise KeyError(f'property:{path[0]} not found')
+            raise KeyError('property:{} not found'. format(path[0]))
         if len(path) == 1:
             value = stats[path[0]]
         elif len(path) == 2:
             if path[1] not in stats[path[0]]:
-                raise KeyError(f'property:{path[1]} not found')
+                raise KeyError('property:{} not found'.format(path[1]))
             else:
                 value = stats[path[0]][path[1]]
     else:
-        raise ValueError(f'Too many keys:{property}')
+        raise ValueError('Too many keys:{}'.format(property))
         
     return value
 
@@ -151,7 +151,7 @@ def zkb_stats(entity_type, entity_id, key):
         logger.debug('Starting...')
         
         logger.debug('Requesting stats from ZKB API')
-        url = f'https://zkillboard.com/api/stats/{entity_type}/{entity_id}/'
+        url = 'https://zkillboard.com/api/stats/{}/{}/'.format(entity_type, entity_id)
         res = requests.get(url)
         res.raise_for_status()
         stats = res.json()
