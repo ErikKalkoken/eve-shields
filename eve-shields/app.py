@@ -1,4 +1,4 @@
-from bottle import route, run, response, request
+from bottle import route, run, response, request, default_app
 from json import dumps
 import requests
 import logging
@@ -142,7 +142,6 @@ def _get_nested_dict_value(property: str, stats: dict):
         
     return value
 
-        
 
 @route('/zkb-stats/<entity_type>/<entity_id>/<key>')
 def zkb_stats(entity_type, entity_id, key):
@@ -171,6 +170,8 @@ def zkb_stats(entity_type, entity_id, key):
         response.content_type = 'application/json'
         logger.info("Sending response...")
         return dumps(shield.get_api_dict())
+
+app = default_app()
 
 if __name__ == '__main__':
     run(host='localhost', port=8000)
