@@ -7,3 +7,4 @@ install:
 script:
   - python tests/test_Shield.py
   - python tests/test_app.py
+  - python setup.py sdist
