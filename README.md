@@ -4,21 +4,25 @@ This is a small web service that allows the creation of [EVE online](https://en.
 
 ![Repo license](https://img.shields.io/github/license/ErikKalkoken/eve-shields) ![Python](https://img.shields.io/badge/python-3.5-blue)
 
-## Features
+Current **eves-shields** service status:
 
-Create shields based on current zKillboard statistics for an EVE entity, e.g. member count for an alliance
+![Uptime Robot status](https://img.shields.io/uptimerobot/status/m783377950-d030d9c007b33bdb219ac4e5) 
+![Uptime Robot ratio](https://img.shields.io/uptimerobot/ratio/m783377950-d030d9c007b33bdb219ac4e5)
 
-## Example
+## Shields
 
-Shield with the current member count of Test Alliance Please Ignore:
+Here is an overview of all shield types this service can generate for you:
 
-![Member Count](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/member-count)
+Name | Description | Category | Example
+--- | --- | --- | ---
+dangerRatio | Danger classification by zKillboard | zkb-stats | ![DangerRatio](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/dangerRatio)
+iskDestroyed | Total ISK destroyed | zkb-stats | ![Dummy](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/iskDestroyed)
+iskLost | Total ISK lost | zkb-stats | ![Dummy](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/iskLost)
+memberCount | Total ISK lost | zkb-stats| ![Dummy](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/memberCount)
+shipsDestroyed | Total ships destroyed | zkb-stats | ![Dummy](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/shipsDestroyed)
+shipsLost | Total ships lost  | zkb-stats| ![Dummy](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/shipsLost)
 
-Link to create this shield:
-
-```plain
-https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/member-count
-```
+All examples are generated live with data from zKillboard for Test Alliance Please Ignore.
 
 ## How it works
 
@@ -28,7 +32,7 @@ The shield are created by a service called [shields.io](shields.io), which is pr
 
 ## How to use it
 
-I am hosting this service on a server and you are free to use it directly for your website or github pages (at your own risk though - I can not guaranteer any kind of service level).
+I am hosting this service on a server and you are free to use it directly for your website or github pages (while I strive to provide a stable service I can not guarantee any service level though. so use at your own risk.).
 
 Or you can install and run it on your own web server. There are many ways, but I recommend using PyInstaller, which is the easiest. You will need a web server (e.g. NGINX) and a WSGI server (e.g Gunicorn) to run it.
 
@@ -40,7 +44,17 @@ Note that if you run it yourself you need to have SSL, because shields.io only a
 
 ## Syntax
 
-To create your own shield use the JSON endpoint URL from shield.io and add the endpoint URL from eve-shields for the `url` parameter
+To create your own shield use the JSON endpoint URL from shield.io and add the endpoint URL from eve-shields for the `url` parameter.
+
+Here is a complete example url for creating a members count shield for Test Alliance Please Ignore:
+
+```plain
+https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/memberCount
+```
+
+Let's break this down in its two parts: shields.io and **eve-shields**.
+
+### shields.io
 
 The syntax for [shields.io JSON endpoint](https://shields.io/endpoint) is:
 
@@ -48,6 +62,7 @@ The syntax for [shields.io JSON endpoint](https://shields.io/endpoint) is:
 https://img.shields.io/endpoint?url={url-eve-shields}&style=...
 ```
 
+### eve-shields
 
 The basic syntax for the  eve shields endpoint url is:
 
@@ -81,22 +96,7 @@ https://eve-shields.kalkoken.net/zkb-stats/{entity-type}/{entity-id}/{shield-nam
   - shipType  
   - solarSystem
 - `entity-id`: a valid EVE ID corresponding to the entity type, e.g. `498125261` for Test Alliance Please Ignore.
-- `shield-name`: name of the shield to create.
-
-### shields
-
-Name | Description | Example
---- | --- | ---
-dangerRatio | Danger classification by zKillboard | ![Dummy](https://img.shields.io/badge/Dummy-tbd-yellow)
-iskDestroyed | Total ISK destroyed | ![Dummy](https://img.shields.io/badge/Dummy-tbd-yellow)
-iskLost | Total ISK lost | ![Dummy](https://img.shields.io/badge/Dummy-tbd-yellow)
-memberCount | Total ISK lost | ![Dummy](https://img.shields.io/badge/Dummy-tbd-yellow)
-shipsDestroyed | Total ships destroyed | ![Dummy](https://img.shields.io/badge/Dummy-tbd-yellow)
-shipsLost | Total ships lost | ![Dummy](https://img.shields.io/badge/Dummy-tbd-yellow)
-
-All examples with Test Alliance Please Ignore.
-
-Note that not all shields are available for every entity type, e.g. there is no member count for ships.
+- `shield-name`: name of the shield to create. Note that not all shields are available for every entity type, e.g. there is no member count for ships. See section **Shields** for a list of all shield names.
 
 ## Contributions
 
