@@ -68,21 +68,6 @@ class TestShield(unittest.TestCase):
         self.assertEqual(x._format_isk(1570000000), "1.6b")
         self.assertEqual(x._format_isk(1570000000000), "1.6t")
 
-    def test__dict_safe_get(self):
-        arr = {
-            "one": 1,
-            "two": 2,
-            "more": {
-                "three": 3,
-                "four": 4,
-                "more": {
-                    "five": 5,
-                    "six": 6           
-        }}}
-        self.assertEqual(_dict_safe_get(arr, "one"), 1)
-        self.assertEqual(_dict_safe_get(arr, "more", "three"), 3)        
-        self.assertEqual(_dict_safe_get(arr, "more", "more", "six"), 6)
-
 
 if __name__ == '__main__':
     unittest.main()

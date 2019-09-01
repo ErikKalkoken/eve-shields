@@ -123,7 +123,7 @@ class TestZkbStats(unittest.TestCase):
 
 class TestHelperFunctions(unittest.TestCase):
     
-    def test__dict_safe_get(self):
+    def test_dict_safe_get(self):
         arr = {
             "one": 1,
             "two": 2,
