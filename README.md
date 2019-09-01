@@ -11,7 +11,7 @@ Here is an overview of all shields this service can generate for you:
 
 Name | Description | Category | Example
 --- | --- | --- | ---
-activePvpChars | Active PVP characters in the last 7 days | zkb-stats | ![activePvpChars](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/dangerRatio)
+activePvpChars | Active PVP characters in the last 7 days | zkb-stats | ![activePvpChars](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/activePvpChars)
 corpCount | Count of member corporations | zkb-stats| ![corpCount](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/corpCount)
 dangerRatio | Danger classification by zKillboard <br> snuggly: green, dangerous: red | zkb-stats | ![dangerRatio](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/dangerRatio)
 iskDestroyed | Total ISK destroyed | zkb-stats | ![iskDestroyed](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/iskDestroyed)
@@ -22,7 +22,13 @@ shipsDestroyed | Total ships destroyed | zkb-stats | ![shipsDestroyed](https://i
 shipsLost | Total ships lost  | zkb-stats| ![shipsLost](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/shipsLost)
 shipsEff | Total ships efficiency in % <br> = destroyed / (destroyed + lost) * 100  <br> eff >= 50: green, eff < 50: red | zkb-stats| ![shipsEff](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/shipsEff)
 
-All examples on this page are generated live with data from zKillboard for Test Alliance Please Ignore.
+All examples on this page are generated live with data from zKillboard statistics for Test Alliance Please Ignore. Here is the URL to create the example memberCount shield:
+
+```plain
+https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/memberCount
+```
+
+If you need additional shields with data generated from zKillboard statistics feel free to raise an issue.
 
 ## How it works
 
