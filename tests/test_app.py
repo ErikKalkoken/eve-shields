@@ -36,7 +36,7 @@ class TestZkbStats(unittest.TestCase):
         self.assertDictEqual(json.loads(x), {
             'schemaVersion': '1',
             'label': 'Active PVP chars',
-            'message': '1,623',
+            'message': '1.6k',
             'color': 'informational',
             'cacheSeconds': app.Shield.CACHE_SECONDS
         })
@@ -126,7 +126,7 @@ class TestZkbStats(unittest.TestCase):
         self.assertDictEqual(json.loads(x), {
             'schemaVersion': '1',
             'label': 'Members',
-            'message': '18,143',
+            'message': '18.1k',
             'color': 'informational',
             'cacheSeconds': app.Shield.CACHE_SECONDS
         })
@@ -141,7 +141,7 @@ class TestZkbStats(unittest.TestCase):
         self.assertDictEqual(json.loads(x), {
             'schemaVersion': '1',
             'label': 'Ships Destroyed',
-            'message': '1,096,773',
+            'message': '1.1m',
             'color': 'success',
             'cacheSeconds': app.Shield.CACHE_SECONDS
         })
@@ -156,7 +156,7 @@ class TestZkbStats(unittest.TestCase):
         self.assertDictEqual(json.loads(x), {
             'schemaVersion': '1',
             'label': 'Ships Lost',
-            'message': '1,142,054',
+            'message': '1.1m',
             'color': 'critical',
             'cacheSeconds': app.Shield.CACHE_SECONDS
         })

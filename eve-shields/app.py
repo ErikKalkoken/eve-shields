@@ -103,9 +103,9 @@ class Shield:
         if format is not None and format not in self.FORMATS_DEF:
             raise ValueError('invalid format')
         if format == self.FORMAT_ISK:
-            txt = self._format_isk(value)
+            txt = self._format_number(value)
         elif format == self.FORMAT_NUMBER:
-            txt = '{:,}'.format(value)
+            txt = self._format_number(value)
         elif format == self.FORMAT_PERCENT:
             txt = '{:.0f}%'.format(value)
         else:
@@ -115,8 +115,8 @@ class Shield:
                 txt = str(value)
         return txt
     
-    def _format_isk(self, value: float) -> str:
-        """convert a value to an ISK string"""
+    def _format_number(self, value: float) -> str:
+        """shorten number for output"""
         v = float(value)
         if v > 10**12:
             p = 12
@@ -134,7 +134,7 @@ class Shield:
             p = 0
             ext = ""
         
-        return '{:,.1f}{}'.format(v / (10**p), ext)
+        return '{:,.1f}{}'.format(v / (10**p), ext) if p > 0 else str(value)
 
 
 def _dict_safe_get(dct: dict, *keys):

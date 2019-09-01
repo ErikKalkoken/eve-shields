@@ -12,15 +12,15 @@ Here is an overview of all shields this service can generate for you:
 Name | Description | Category | Example
 --- | --- | --- | ---
 activePvpChars | Active PVP characters in the last 7 days | zkb-stats | ![activePvpChars](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/dangerRatio)
-corpCount | Count of member corporations | zkb-stats| ![memberCount](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/memberCount)
-dangerRatio | Danger classification by zKillboard | zkb-stats | ![dangerRatio](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/dangerRatio)
+corpCount | Count of member corporations | zkb-stats| ![corpCount](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/corpCount)
+dangerRatio | Danger classification by zKillboard <br> snuggly: green, dangerous: red | zkb-stats | ![dangerRatio](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/dangerRatio)
 iskDestroyed | Total ISK destroyed | zkb-stats | ![iskDestroyed](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/iskDestroyed)
 iskLost | Total ISK lost | zkb-stats | ![iskLost](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/iskLost)
-iskEff | Total ISK efficiency in % <br> = destroyed / (destroyed + lost) * 100 | zkb-stats | ![iskEff](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/iskLost)
+iskEff | Total ISK efficiency in % <br> eff = destroyed / (destroyed + lost) * 100 <br> eff >= 50: green, eff < 50: red  | zkb-stats | ![iskEff](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/iskEff)
 memberCount | Count of member characters | zkb-stats| ![memberCount](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/memberCount)
 shipsDestroyed | Total ships destroyed | zkb-stats | ![shipsDestroyed](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/shipsDestroyed)
 shipsLost | Total ships lost  | zkb-stats| ![shipsLost](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/shipsLost)
-shipsEff | Total ships efficiency in % <br> = destroyed / (destroyed + lost) * 100  | zkb-stats| ![shipsEff](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/shipsLost)
+shipsEff | Total ships efficiency in % <br> = destroyed / (destroyed + lost) * 100  <br> eff >= 50: green, eff < 50: red | zkb-stats| ![shipsEff](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/shipsEff)
 
 All examples on this page are generated live with data from zKillboard for Test Alliance Please Ignore.
 
@@ -32,7 +32,7 @@ The shield are created by a service called [shields.io](shields.io), which is pr
 
 ## How to use it
 
-I am hosting this service on a server and you are free to use it directly for your website or github pages (while I strive to provide a stable service I can not guarantee any service level though. so use at your own risk.).
+I am hosting this service on a server and you are free to use it directly for your website or github pages. (see section **Service** for details)
 
 Or you can install and run it on your own web server. There are many ways, but I recommend using PyInstaller, which is the easiest. You will need a web server (e.g. NGINX) and a WSGI server (e.g Gunicorn) to run it.
 
@@ -97,6 +97,12 @@ https://eve-shields.kalkoken.net/zkb-stats/{entity-type}/{entity-id}/{shield-nam
   - solarSystem
 - `entity-id`: a valid EVE ID corresponding to the entity type, e.g. `498125261` for Test Alliance Please Ignore.
 - `shield-name`: name of the shield to create. Note that not all shields are available for every entity type, e.g. there is no member count for ships. See section **Shields** for a list of all shield names.
+
+## Service
+
+The eve-shields service on https://eve-shields.kalkoken.net is provided for free and can be used by anyone to create their own eve related shields. And while I strive to provide a reliable service it is provided "as-is" only and without any guarantees with respect to availability and reliably.
+
+For the current service status check the shields on top of this page. A detailed service status report can be found [here](https://stats.uptimerobot.com/voNrrI7ooP).
 
 ## Contributions
 

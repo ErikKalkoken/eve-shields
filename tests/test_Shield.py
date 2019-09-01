@@ -61,13 +61,13 @@ class TestShield(unittest.TestCase):
             'cacheSeconds': Shield.CACHE_SECONDS
         })
 
-    def test_format_isk(self):
+    def test__format_number(self):
         x = Shield("hi", "sweet world")
-        self.assertEqual(x._format_isk(555), "555.0")
-        self.assertEqual(x._format_isk(1570), "1.6k")
-        self.assertEqual(x._format_isk(1570000), "1.6m")
-        self.assertEqual(x._format_isk(1570000000), "1.6b")
-        self.assertEqual(x._format_isk(1570000000000), "1.6t")
+        self.assertEqual(x._format_number(555), "555")
+        self.assertEqual(x._format_number(1570), "1.6k")
+        self.assertEqual(x._format_number(1570000), "1.6m")
+        self.assertEqual(x._format_number(1570000000), "1.6b")
+        self.assertEqual(x._format_number(1570000000000), "1.6t")
 
 
 if __name__ == '__main__':
