@@ -1,4 +1,4 @@
-from bottle import route, run, response, request, default_app
+from bottle import route, run, response, request, default_app, abort
 from json import dumps
 import requests
 import logging
@@ -17,9 +17,11 @@ class Shield:
     """Defines a shield"""
     
     # define formats for output
-    FORMAT_ISK = 'isk'    
+    FORMAT_ISK = 'isk'
+    FORMAT_NUMBER = 'number'
     FORMATS_DEF = [
-        FORMAT_ISK
+        FORMAT_ISK,
+        FORMAT_NUMBER,
     ]
 
     def __init__(
@@ -96,7 +98,9 @@ class Shield:
         if format is not None and format not in self.FORMATS_DEF:
             raise ValueError('invalid format')
         if format == self.FORMAT_ISK:
-            txt = self._format_isk(value)        
+            txt = self._format_isk(value)
+        elif format == self.FORMAT_NUMBER:
+            txt = '{:,}'.format(value)
         else:
             if isinstance(value, bool):
                 txt = 'yes' if value else 'no'
@@ -123,46 +127,101 @@ class Shield:
             p = 0
             ext = ""
         
-        return str(round(v / (10**p), 1)) + ext
-
-def _get_nested_dict_value(property: str, stats: dict):
-    """returns the value in nested dict specified by p1 or p1-p2"""
-    path = property.split('-')    
-    if len(path) <= 2:
-        if path[0] not in stats:
-            raise KeyError('property:{} not found'. format(path[0]))
-        if len(path) == 1:
-            value = stats[path[0]]
-        elif len(path) == 2:
-            if path[1] not in stats[path[0]]:
-                raise KeyError('property:{} not found'.format(path[1]))
-            else:
-                value = stats[path[0]][path[1]]
-    else:
-        raise ValueError('Too many keys:{}'.format(property))
-        
-    return value
+        return '{:,.1f}{}'.format(v / (10**p), ext)
 
 
-@route('/zkb-stats/<entity_type>/<entity_id>/<key>')
-def zkb_stats(entity_type, entity_id, key):
+def _dict_safe_get(dct: dict, *keys):
+    """safely get properties in a nested dict. Raises 404 if key not found"""
+    for key in keys:
+        try:
+            dct = dct[key]
+        except KeyError:            
+            abort(404, 'Invalid key: {}'.format(key))            
+    return dct
+
+
+@route('/zkb-stats/<entity_type>/<entity_id:int>/<property>')
+def zkb_stats(entity_type, entity_id, property):
     """endpoint for providing zkb stats related shields"""
     try:
         logger.debug('Starting...')
         
+        # input validation
+        entity_type_map = {            
+            'character': 'characterID',
+            'corporation': 'corporationID',
+            'alliance': 'allianceID',
+            'faction': 'factionID',
+            'shipType': 'shipTypeID',
+            'shipGroup': 'groupID',
+            'solarSystem': 'solarSystemID',
+            'region': 'regionID'
+        }
+        if entity_type not in entity_type_map:
+            abort(404, "invalid entity type: {}".format(entity_type))
+        else:
+            entity_type_zkb = entity_type_map[entity_type]
+
         logger.debug('Requesting stats from ZKB API')
-        url = 'https://zkillboard.com/api/stats/{}/{}/'.format(entity_type, entity_id)
+        url = 'https://zkillboard.com/api/stats/{}/{}/'.format(
+            entity_type_zkb, 
+            entity_id
+            )
         res = requests.get(url)
         res.raise_for_status()
         stats = res.json()
 
-        logger.debug('Stats received from ZKB')
+        logger.debug('Stats received from ZKB')   
+
+        if property == "dangerRatio":
+            dangerRatio = _dict_safe_get(stats, 'dangerRatio')
+            label = "Danger"
+            format = None
+            if dangerRatio > 50:
+                message = "Dangerous {}%".format(dangerRatio)
+                color = "red"                
+            else:                
+                message = "Snuggly {}%".format(100 - dangerRatio)
+                color = "green"       
+
+        elif property == 'iskDestroyed':
+            label = "ISK Destroyed"
+            message = _dict_safe_get(stats, 'iskDestroyed')
+            color = "success"
+            format = Shield.FORMAT_ISK
+
+        elif property == 'iskLost':
+            label = "ISK Lost"
+            message = _dict_safe_get(stats, 'iskLost')
+            color = "critical"
+            format = Shield.FORMAT_ISK
+
+        elif property == 'memberCount':
+            label = "Member Count"
+            message = _dict_safe_get(stats, 'info', 'memberCount')            
+            color = "blue"
+            format = Shield.FORMAT_NUMBER
+
+        elif property == 'shipsDestroyed':
+            label = "Ships Destroyed"
+            message = _dict_safe_get(stats, 'shipsDestroyed')            
+            color = "success"
+            format = Shield.FORMAT_NUMBER
+
+        elif property == 'shipsLost':
+            label = "Ships Lost"
+            message = _dict_safe_get(stats, 'shipsLost')            
+            color = "critical"
+            format = Shield.FORMAT_NUMBER
+        
+        else:
+            abort(404, "Invalid property: {}".format(property))
 
         shield = Shield(
-            label=request.query.label if 'label' in request.query else key,
-            message=_get_nested_dict_value(key, stats), 
-            color=request.query.color if 'color' in request.query else None,
-            format=request.query.format if 'format' in request.query else None
+            label=label,
+            message=message,
+            color=color,
+            format=format
         )        
     except:
         logging.exception("exception ocurred")
