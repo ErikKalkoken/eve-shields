@@ -96,7 +96,7 @@ https://eve-shields.kalkoken.net/zkb-stats/{entity-type}/{entity-id}/{shield-nam
 
 ## Contributions
 
-Help and contributions are welcome
+Help and contributions are welcome.
 
 ## Credits
 
