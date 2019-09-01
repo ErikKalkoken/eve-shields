@@ -15,13 +15,17 @@ app = default_app()
 
 class Shield:
     """Defines a shield"""
-    
+    # cache duration in seconds for a shield
+    CACHE_SECONDS = 1800
+
     # define formats for output
     FORMAT_ISK = 'isk'
     FORMAT_NUMBER = 'number'
+    FORMAT_PERCENT = 'percent'
     FORMATS_DEF = [
         FORMAT_ISK,
         FORMAT_NUMBER,
+        FORMAT_PERCENT
     ]
 
     def __init__(
@@ -86,7 +90,8 @@ class Shield:
         d = {
             'schemaVersion': self.schema_version,
             'label': self.label,
-            'message': self._formatValue(self.message, self.format)
+            'message': self._formatValue(self.message, self.format),
+            'cacheSeconds': self.CACHE_SECONDS
         }
         if self.color is not None:
             d['color'] = self.color
@@ -101,6 +106,8 @@ class Shield:
             txt = self._format_isk(value)
         elif format == self.FORMAT_NUMBER:
             txt = '{:,}'.format(value)
+        elif format == self.FORMAT_PERCENT:
+            txt = '{:.0f}%'.format(value)
         else:
             if isinstance(value, bool):
                 txt = 'yes' if value else 'no'
@@ -167,59 +174,104 @@ def zkb_stats(entity_type, entity_id, property):
             entity_type_zkb, 
             entity_id
             )
-        res = requests.get(url)
+        headers = {
+            'Cache-Control': 'max-age={}'.format(Shield.CACHE_SECONDS),
+            'Accept': 'application/json'
+        }
+        res = requests.get(url, headers=headers)
         res.raise_for_status()
         stats = res.json()
 
         logger.debug('Stats received from ZKB')   
 
-        if property == "dangerRatio":
+        # generating requested shield
+        if property == 'activePvpChars':
+            label = "Active PVP chars"
+            value = _dict_safe_get(stats, 'activepvp', 'characters', 'count')
+            color = "informational"
+            format = Shield.FORMAT_NUMBER
+
+        elif property == 'corpCount':
+            label = "Corporations"
+            value = _dict_safe_get(stats, 'info', 'corpCount')            
+            color = "informational"
+            format = Shield.FORMAT_NUMBER
+
+        elif property == "dangerRatio":
             dangerRatio = _dict_safe_get(stats, 'dangerRatio')
             label = "Danger"
             format = None
             if dangerRatio > 50:
-                message = "Dangerous {}%".format(dangerRatio)
+                value = "Dangerous {}%".format(dangerRatio)
                 color = "red"                
             else:                
-                message = "Snuggly {}%".format(100 - dangerRatio)
+                value = "Snuggly {}%".format(100 - dangerRatio)
                 color = "green"       
 
         elif property == 'iskDestroyed':
             label = "ISK Destroyed"
-            message = _dict_safe_get(stats, 'iskDestroyed')
+            value = _dict_safe_get(stats, 'iskDestroyed')
             color = "success"
             format = Shield.FORMAT_ISK
 
         elif property == 'iskLost':
             label = "ISK Lost"
-            message = _dict_safe_get(stats, 'iskLost')
+            value = _dict_safe_get(stats, 'iskLost')
             color = "critical"
             format = Shield.FORMAT_ISK
 
-        elif property == 'memberCount':
-            label = "Member Count"
-            message = _dict_safe_get(stats, 'info', 'memberCount')            
-            color = "blue"
-            format = Shield.FORMAT_NUMBER
+        elif property == 'iskEff':
+            destroyed = _dict_safe_get(stats, 'iskDestroyed')
+            lost = _dict_safe_get(stats, 'iskLost')            
+            label = "ISK Efficiency"
+            if destroyed + lost > 0:
+                value = destroyed / (destroyed + lost) * 100
+            else:
+                value = 0
+            if value < 50:
+                color = "critical"
+            else:
+                color = "success"
+            format = Shield.FORMAT_PERCENT
 
+        elif property == 'memberCount':
+            label = "Members"
+            value = _dict_safe_get(stats, 'info', 'memberCount')            
+            color = "informational"
+            format = Shield.FORMAT_NUMBER
+            
         elif property == 'shipsDestroyed':
             label = "Ships Destroyed"
-            message = _dict_safe_get(stats, 'shipsDestroyed')            
+            value = _dict_safe_get(stats, 'shipsDestroyed')            
             color = "success"
             format = Shield.FORMAT_NUMBER
 
         elif property == 'shipsLost':
             label = "Ships Lost"
-            message = _dict_safe_get(stats, 'shipsLost')            
+            value = _dict_safe_get(stats, 'shipsLost')            
             color = "critical"
             format = Shield.FORMAT_NUMBER
+
+        elif property == 'shipsEff':
+            destroyed = _dict_safe_get(stats, 'shipsDestroyed')
+            lost = _dict_safe_get(stats, 'shipsLost')            
+            label = "Ships Efficiency"
+            if destroyed + lost > 0:
+                value = destroyed / (destroyed + lost) * 100
+            else:
+                value = 0                
+            if value < 50:
+                color = "critical"
+            else:
+                color = "success"
+            format = format = Shield.FORMAT_PERCENT
         
         else:
             abort(404, "Invalid property: {}".format(property))
 
         shield = Shield(
             label=label,
-            message=message,
+            message=value,
             color=color,
             format=format
         )        
@@ -228,6 +280,11 @@ def zkb_stats(entity_type, entity_id, property):
         raise
     else:
         response.content_type = 'application/json'
+        response.add_header(
+            'Cache-Control', 
+            'max-age={}'.format(Shield.CACHE_SECONDS)
+            )
+        response.add_header('Access-Control-Allow-Origin', '*')        
         logger.info("Sending response...")
         return dumps(shield.get_api_dict())
 

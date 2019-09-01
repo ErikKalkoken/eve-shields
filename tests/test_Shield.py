@@ -57,7 +57,8 @@ class TestShield(unittest.TestCase):
             "schemaVersion": "1",
             "label": "hi",
             "message": "sweet world",
-            "color": "orange"
+            "color": "orange",
+            'cacheSeconds': Shield.CACHE_SECONDS
         })
 
     def test_format_isk(self):

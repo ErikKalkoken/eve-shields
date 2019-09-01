@@ -25,7 +25,37 @@ class TestZkbStats(unittest.TestCase):
         mock.json.return_value = cls.stats
         mock.raise_for_status = Mock()        
         cls.mock_get = mock
-            
+    
+    @patch('app.requests.get')
+    def test_activeP_pvp_chars(self, mock): 
+        # replacing requests.get with mock method        
+        mock.return_value = self.mock_get
+        
+        # performing tests                
+        x = app.zkb_stats('alliance', '0', 'activePvpChars')
+        self.assertDictEqual(json.loads(x), {
+            'schemaVersion': '1',
+            'label': 'Active PVP chars',
+            'message': '1,623',
+            'color': 'informational',
+            'cacheSeconds': app.Shield.CACHE_SECONDS
+        })
+
+    @patch('app.requests.get')
+    def test_corp_count(self, mock): 
+        # replacing requests.get with mock method        
+        mock.return_value = self.mock_get
+        
+        # performing tests                
+        x = app.zkb_stats('alliance', '0', 'corpCount')
+        self.assertDictEqual(json.loads(x), {
+            'schemaVersion': '1',
+            'label': 'Corporations',
+            'message': '66',
+            'color': 'informational',
+            'cacheSeconds': app.Shield.CACHE_SECONDS
+        })
+
     @patch('app.requests.get')
     def test_danger_ratio(self, mock): 
         # replacing requests.get with mock method        
@@ -38,6 +68,7 @@ class TestZkbStats(unittest.TestCase):
             'label': 'Danger',
             'message': 'Snuggly 55%',
             'color': 'green',
+            'cacheSeconds': app.Shield.CACHE_SECONDS
         })
 
     @patch('app.requests.get')
@@ -52,6 +83,7 @@ class TestZkbStats(unittest.TestCase):
             'label': 'ISK Destroyed',
             'message': '154.0t',
             'color': 'success',
+            'cacheSeconds': app.Shield.CACHE_SECONDS
         })
 
     @patch('app.requests.get')
@@ -66,6 +98,22 @@ class TestZkbStats(unittest.TestCase):
             'label': 'ISK Lost',
             'message': '83.2t',
             'color': 'critical',
+            'cacheSeconds': app.Shield.CACHE_SECONDS
+        })
+
+    @patch('app.requests.get')
+    def test_isk_eff(self, mock): 
+        # replacing requests.get with mock method        
+        mock.return_value = self.mock_get
+        
+        # performing tests                
+        x = app.zkb_stats('alliance', '0', 'iskEff')
+        self.assertDictEqual(json.loads(x), {
+            'schemaVersion': '1',
+            'label': 'ISK Efficiency',
+            'message': '65%',
+            'color': 'success',
+            'cacheSeconds': app.Shield.CACHE_SECONDS
         })
 
     @patch('app.requests.get')
@@ -77,9 +125,10 @@ class TestZkbStats(unittest.TestCase):
         x = app.zkb_stats('alliance', '0', 'memberCount')
         self.assertDictEqual(json.loads(x), {
             'schemaVersion': '1',
-            'label': 'Member Count',
+            'label': 'Members',
             'message': '18,143',
-            'color': 'blue',
+            'color': 'informational',
+            'cacheSeconds': app.Shield.CACHE_SECONDS
         })
 
     @patch('app.requests.get')
@@ -94,6 +143,7 @@ class TestZkbStats(unittest.TestCase):
             'label': 'Ships Destroyed',
             'message': '1,096,773',
             'color': 'success',
+            'cacheSeconds': app.Shield.CACHE_SECONDS
         })
 
     @patch('app.requests.get')
@@ -108,6 +158,22 @@ class TestZkbStats(unittest.TestCase):
             'label': 'Ships Lost',
             'message': '1,142,054',
             'color': 'critical',
+            'cacheSeconds': app.Shield.CACHE_SECONDS
+        })
+
+    @patch('app.requests.get')
+    def test_ships_eff(self, mock): 
+        # replacing requests.get with mock method        
+        mock.return_value = self.mock_get
+        
+        # performing tests                
+        x = app.zkb_stats('alliance', '0', 'shipsEff')
+        self.assertDictEqual(json.loads(x), {
+            'schemaVersion': '1',
+            'label': 'Ships Efficiency',
+            'message': '49%',
+            'color': 'critical',
+            'cacheSeconds': app.Shield.CACHE_SECONDS
         })
 
     # invalid properties should raise a HTTP error

@@ -11,11 +11,11 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='eve-shields',
-    version='0.2.0',
+    version='0.3.0',
     packages=find_packages(),
     include_package_data=True,
     license='MIT',
-    description='Web service for creating Eve Online related shields through shields.io',
+    description='Web service for creating Eve Online related shields with shields.io',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/ErikKalkoken/eve-shields',

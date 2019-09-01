@@ -2,23 +2,27 @@
 
 This is a small web service that allows the creation of [EVE online](https://en.wikipedia.org/wiki/Eve_Online) related dynamic shields that can be used on web sites or github pages. Like the ones below that show stats for this github repo and the **eve-shields** service.
 
-![Repo license](https://img.shields.io/github/license/ErikKalkoken/eve-shields) ![Python](https://img.shields.io/badge/python-3.5-blue) ![Build](https://api.travis-ci.org/ErikKalkoken/eve-shields.svg?branch=master) ![Uptime Robot status](https://img.shields.io/uptimerobot/status/m783377950-d030d9c007b33bdb219ac4e5) 
+![Repo license](https://img.shields.io/github/license/ErikKalkoken/eve-shields) ![Python](https://img.shields.io/badge/python-3.5-blue) ![Build](https://api.travis-ci.org/ErikKalkoken/eve-shields.svg?branch=master) ![Uptime Robot status](https://img.shields.io/uptimerobot/status/m783377950-d030d9c007b33bdb219ac4e5)
 [![Uptime Robot ratio](https://img.shields.io/uptimerobot/ratio/m783377950-d030d9c007b33bdb219ac4e5)](https://stats.uptimerobot.com/voNrrI7ooP)
 
 ## Shields
 
-Here is an overview of all shield types this service can generate for you:
+Here is an overview of all shields this service can generate for you:
 
 Name | Description | Category | Example
 --- | --- | --- | ---
-dangerRatio | Danger classification by zKillboard | zkb-stats | ![DangerRatio](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/dangerRatio)
-iskDestroyed | Total ISK destroyed | zkb-stats | ![Dummy](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/iskDestroyed)
-iskLost | Total ISK lost | zkb-stats | ![Dummy](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/iskLost)
-memberCount | Total ISK lost | zkb-stats| ![Dummy](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/memberCount)
-shipsDestroyed | Total ships destroyed | zkb-stats | ![Dummy](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/shipsDestroyed)
-shipsLost | Total ships lost  | zkb-stats| ![Dummy](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/shipsLost)
+activePvpChars | Active PVP characters in the last 7 days | zkb-stats | ![activePvpChars](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/dangerRatio)
+corpCount | Count of member corporations | zkb-stats| ![memberCount](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/memberCount)
+dangerRatio | Danger classification by zKillboard | zkb-stats | ![dangerRatio](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/dangerRatio)
+iskDestroyed | Total ISK destroyed | zkb-stats | ![iskDestroyed](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/iskDestroyed)
+iskLost | Total ISK lost | zkb-stats | ![iskLost](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/iskLost)
+iskEff | Total ISK efficiency in % <br> = destroyed / (destroyed + lost) * 100 | zkb-stats | ![iskEff](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/iskLost)
+memberCount | Count of member characters | zkb-stats| ![memberCount](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/memberCount)
+shipsDestroyed | Total ships destroyed | zkb-stats | ![shipsDestroyed](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/shipsDestroyed)
+shipsLost | Total ships lost  | zkb-stats| ![shipsLost](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/shipsLost)
+shipsEff | Total ships efficiency in % <br> = destroyed / (destroyed + lost) * 100  | zkb-stats| ![shipsEff](https://img.shields.io/endpoint?url=https://eve-shields.kalkoken.net/zkb-stats/alliance/498125261/shipsLost)
 
-All examples are generated live with data from zKillboard for Test Alliance Please Ignore.
+All examples on this page are generated live with data from zKillboard for Test Alliance Please Ignore.
 
 ## How it works
 
@@ -63,20 +67,20 @@ https://img.shields.io/endpoint?url={url-eve-shields}&style=...
 The basic syntax for the  eve shields endpoint url is:
 
 ```plain
-https://eve-shields.kalkoken.net/{category}/...
+https://eve-shields.kalkoken.net/{source}/...
 ```
 
- `category` defines the category of shields to create. Currently only `zkb-stats` is supported.
+ `source` is the name of the data source used to create shields. Currently the only implemented source is `zkb-stats`.
 
 Note that you still can add query parameters from shields.io to customize your shield, e.g. if you want to override the color (`color`) or label (`label`) generated by eve-shield.
 
-### category: zkb-stats
+### Source: zkb-stats
 
 `zkb-stats` provides zKillboard statistics for EVE entities.  See [here](https://github.com/zKillboard/zKillboard/wiki/API-(Statistics)) for details on the API. Please note though that only a sub set is currently implemented.
 
 #### syntax
 
-The syntax for the 
+The syntax for zkb-stats shields is as follows:
 
 ```plain
 https://eve-shields.kalkoken.net/zkb-stats/{entity-type}/{entity-id}/{shield-name}
@@ -100,4 +104,4 @@ Help and contributions are welcome.
 
 ## Credits
 
-Special thanks to the guys at [shields.io](https://shields.io) for their great service.
+Special thanks to the guys at [shields.io](https://shields.io) for their great service and to [@cvweiss](https://github.com/cvweiss) for running [zKillboard](https://github.com/zKillboard/zKillboard) and providing all those nice APIs along with it.
