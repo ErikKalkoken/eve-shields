@@ -7,7 +7,7 @@ import sys
 import inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir + "/eve-shields")
+sys.path.insert(0,parentdir + "/eve_shields")
 import json
 import app
 import bottle
@@ -34,7 +34,7 @@ class TestZkbStats(unittest.TestCase):
         # performing tests                
         x = app.zkb_stats('alliance', '0', 'activePvpChars')
         self.assertDictEqual(json.loads(x), {
-            'schemaVersion': '1',
+            'schemaVersion': 1,
             'label': 'Active PVP chars',
             'message': '1.6k',
             'color': 'informational',
@@ -49,7 +49,7 @@ class TestZkbStats(unittest.TestCase):
         # performing tests                
         x = app.zkb_stats('alliance', '0', 'corpCount')
         self.assertDictEqual(json.loads(x), {
-            'schemaVersion': '1',
+            'schemaVersion': 1,
             'label': 'Corporations',
             'message': '66',
             'color': 'informational',
@@ -64,7 +64,7 @@ class TestZkbStats(unittest.TestCase):
         # performing tests                
         x = app.zkb_stats('alliance', '0', 'dangerRatio')
         self.assertDictEqual(json.loads(x), {
-            'schemaVersion': '1',
+            'schemaVersion': 1,
             'label': 'Danger',
             'message': 'Snuggly 55%',
             'color': 'green',
@@ -79,7 +79,7 @@ class TestZkbStats(unittest.TestCase):
         # performing tests                
         x = app.zkb_stats('alliance', '0', 'iskDestroyed')
         self.assertDictEqual(json.loads(x), {
-            'schemaVersion': '1',
+            'schemaVersion': 1,
             'label': 'ISK Destroyed',
             'message': '154.0t',
             'color': 'success',
@@ -94,7 +94,7 @@ class TestZkbStats(unittest.TestCase):
         # performing tests                
         x = app.zkb_stats('alliance', '0', 'iskLost')
         self.assertDictEqual(json.loads(x), {
-            'schemaVersion': '1',
+            'schemaVersion': 1,
             'label': 'ISK Lost',
             'message': '83.2t',
             'color': 'critical',
@@ -109,7 +109,7 @@ class TestZkbStats(unittest.TestCase):
         # performing tests                
         x = app.zkb_stats('alliance', '0', 'iskEff')
         self.assertDictEqual(json.loads(x), {
-            'schemaVersion': '1',
+            'schemaVersion': 1,
             'label': 'ISK Efficiency',
             'message': '65%',
             'color': 'success',
@@ -124,7 +124,7 @@ class TestZkbStats(unittest.TestCase):
         # performing tests                
         x = app.zkb_stats('alliance', '0', 'memberCount')
         self.assertDictEqual(json.loads(x), {
-            'schemaVersion': '1',
+            'schemaVersion': 1,
             'label': 'Members',
             'message': '18.1k',
             'color': 'informational',
@@ -139,7 +139,7 @@ class TestZkbStats(unittest.TestCase):
         # performing tests                
         x = app.zkb_stats('alliance', '0', 'shipsDestroyed')
         self.assertDictEqual(json.loads(x), {
-            'schemaVersion': '1',
+            'schemaVersion': 1,
             'label': 'Ships Destroyed',
             'message': '1.1m',
             'color': 'success',
@@ -154,7 +154,7 @@ class TestZkbStats(unittest.TestCase):
         # performing tests                
         x = app.zkb_stats('alliance', '0', 'shipsLost')
         self.assertDictEqual(json.loads(x), {
-            'schemaVersion': '1',
+            'schemaVersion': 1,
             'label': 'Ships Lost',
             'message': '1.1m',
             'color': 'critical',
@@ -169,7 +169,7 @@ class TestZkbStats(unittest.TestCase):
         # performing tests                
         x = app.zkb_stats('alliance', '0', 'shipsEff')
         self.assertDictEqual(json.loads(x), {
-            'schemaVersion': '1',
+            'schemaVersion': 1,
             'label': 'Ships Efficiency',
             'message': '49%',
             'color': 'critical',

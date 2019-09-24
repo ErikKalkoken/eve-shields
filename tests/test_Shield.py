@@ -6,7 +6,7 @@ import sys
 import inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir + "/eve-shields")
+sys.path.insert(0,parentdir + "/eve_shields")
 from app import Shield
 
 class TestShield(unittest.TestCase):
@@ -54,7 +54,7 @@ class TestShield(unittest.TestCase):
         self.assertDictEqual(
             x.get_api_dict(),
             {
-            "schemaVersion": "1",
+            "schemaVersion": 1,
             "label": "hi",
             "message": "sweet world",
             "color": "orange",

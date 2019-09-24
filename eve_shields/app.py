@@ -34,14 +34,14 @@ class Shield:
             message: str, 
             color:str = None,
             format:str = None):
-        self._schema_version = "1"
+        self._schema_version = 1
         self.label = label
         self.message = message
         self.color = color
         self.format = format
         
     @property
-    def schema_version(self) -> str:
+    def schema_version(self) -> int:
         return self._schema_version
 
     @property
@@ -284,7 +284,8 @@ def zkb_stats(entity_type, entity_id, property):
             'Cache-Control', 
             'max-age={}'.format(Shield.CACHE_SECONDS)
             )
-        response.add_header('Access-Control-Allow-Origin', '*')        
+        response.add_header('Access-Control-Allow-Origin', '*')
+        response.add_header('Access-Control-Allow-Methods', 'GET')        
         logger.info("Sending response...")
         return dumps(shield.get_api_dict())
 
