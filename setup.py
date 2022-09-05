@@ -31,13 +31,13 @@ setup(
         "License :: OSI Approved :: MIT License",  # example license
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.8",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
     ],
-    python_requires="~=3.10",
+    python_requires="~=3.8",
     install_requires=[
-        "bottle >= 0.12.17",
-        "requests >= 2.22.0",
+        "bottle >= 0.12",
+        "requests >= 2.22",
     ],
 )

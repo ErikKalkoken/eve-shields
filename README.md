@@ -3,7 +3,7 @@
 This is a small web service that allows the creation of [EVE online](https://en.wikipedia.org/wiki/Eve_Online) related dynamic shields that can be used on web sites or github pages. Like the ones below that show stats for this github repo and the **eve-shields** service.
 
 ![Repo license](https://img.shields.io/github/license/ErikKalkoken/eve-shields)
-![Python](https://img.shields.io/badge/python-3.5-blue)
+![Python](https://img.shields.io/badge/python-3.8-blue)
 ![Build](https://api.travis-ci.org/ErikKalkoken/eve-shields.svg?branch=master)
 ![Uptime Robot status](https://img.shields.io/uptimerobot/status/m783377950-d030d9c007b33bdb219ac4e5)
 [![Uptime Robot ratio](https://img.shields.io/uptimerobot/ratio/m783377950-d030d9c007b33bdb219ac4e5)](https://stats.uptimerobot.com/voNrrI7ooP)
