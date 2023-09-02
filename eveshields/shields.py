@@ -1,3 +1,6 @@
+"""Shield class for Eve Shields."""
+
+
 class Shield:
     """Defines a shield"""
 
@@ -10,12 +13,14 @@ class Shield:
     FORMAT_PERCENT = "percent"
     FORMATS_DEF = [FORMAT_ISK, FORMAT_NUMBER, FORMAT_PERCENT]
 
-    def __init__(self, label: str, message: str, color: str = None, format: str = None):
+    def __init__(
+        self, label: str, message: str, color: str = None, shield_format: str = None
+    ):
         self._schema_version = 1
         self.label = label
         self.message = message
         self.color = color
-        self.format = format
+        self.shield_format = shield_format
 
     @property
     def schema_version(self) -> int:
@@ -52,11 +57,11 @@ class Shield:
         self._color = str(value) if value is not None else None
 
     @property
-    def format(self) -> str:
+    def shield_format(self) -> str:
         return self._format
 
-    @format.setter
-    def format(self, value: str):
+    @shield_format.setter
+    def shield_format(self, value: str):
         if value is not None and value not in self.FORMATS_DEF:
             raise ValueError("invalid format")
         self._format = value
@@ -67,7 +72,7 @@ class Shield:
         d = {
             "schemaVersion": self.schema_version,
             "label": self.label,
-            "message": self._formatValue(self.message, self.format),
+            "message": self._formatValue(self.message, self.shield_format),
             "cacheSeconds": self.CACHE_SECONDS,
         }
         if self.color is not None:

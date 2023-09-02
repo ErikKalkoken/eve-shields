@@ -11,14 +11,14 @@ class TestShield(unittest.TestCase):
         self.assertEqual(x.label, "hi")
         self.assertEqual(x.message, "sweet world")
         self.assertIsNone(x.color)
-        self.assertIsNone(x.format)
+        self.assertIsNone(x.shield_format)
 
     def test_create_full(self):
         x = Shield("hi", "sweet world", "orange", "isk")
         self.assertEqual(x.label, "hi")
         self.assertEqual(x.message, "sweet world")
         self.assertEqual(x.color, "orange")
-        self.assertEqual(x.format, "isk")
+        self.assertEqual(x.shield_format, "isk")
 
     def test_setters1(self):
         x = Shield("hi", "sweet world")
@@ -29,8 +29,8 @@ class TestShield(unittest.TestCase):
         self.assertEqual(x.message, 99)
         x.color = "red"
         self.assertEqual(x.color, "red")
-        x.format = "isk"
-        self.assertEqual(x.format, "isk")
+        x.shield_format = "isk"
+        self.assertEqual(x.shield_format, "isk")
 
     def test_set_message(self):
         x = Shield("hi", "sweet world", "orange", "isk")
@@ -42,7 +42,7 @@ class TestShield(unittest.TestCase):
     def test_set_format(self):
         x = Shield("hi", "sweet world")
         with self.assertRaises(ValueError):
-            x.format = "xyz"
+            x.shield_format = "xyz"
 
     def test_get_dict(self):
         x = Shield("hi", "sweet world", "orange")

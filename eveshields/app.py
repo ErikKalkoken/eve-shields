@@ -1,3 +1,5 @@
+"""Bottle app for Eve Shields."""
+
 import logging
 from json import dumps
 
@@ -23,7 +25,7 @@ def _dict_safe_get(dct: dict, *keys):
         try:
             dct = dct[key]
         except KeyError:
-            abort(404, "Invalid key: {}".format(key))
+            abort(404, f"Invalid key: {key}")
     return dct
 
 
@@ -45,16 +47,14 @@ def zkb_stats(entity_type, entity_id, property):
             "region": "regionID",
         }
         if entity_type not in entity_type_map:
-            abort(404, "invalid entity type: {}".format(entity_type))
+            abort(404, f"invalid entity type: {entity_type}")
         else:
             entity_type_zkb = entity_type_map[entity_type]
 
         logger.debug("Requesting stats from ZKB API")
-        url = "https://zkillboard.com/api/stats/{}/{}/".format(
-            entity_type_zkb, entity_id
-        )
+        url = f"https://zkillboard.com/api/stats/{entity_type_zkb}/{entity_id}/"
         headers = {
-            "Cache-Control": "max-age={}".format(Shield.CACHE_SECONDS),
+            "Cache-Control": f"max-age={Shield.CACHE_SECONDS}",
             "Accept": "application/json",
         }
         res = requests.get(url, headers=headers)
@@ -68,36 +68,36 @@ def zkb_stats(entity_type, entity_id, property):
             label = "Active PVP chars"
             value = _dict_safe_get(stats, "activepvp", "characters", "count")
             color = "informational"
-            format = Shield.FORMAT_NUMBER
+            shield_format = Shield.FORMAT_NUMBER
 
         elif property == "corpCount":
             label = "Corporations"
             value = _dict_safe_get(stats, "info", "corpCount")
             color = "informational"
-            format = Shield.FORMAT_NUMBER
+            shield_format = Shield.FORMAT_NUMBER
 
         elif property == "dangerRatio":
             dangerRatio = _dict_safe_get(stats, "dangerRatio")
             label = "Danger"
-            format = None
+            shield_format = None
             if dangerRatio > 50:
-                value = "Dangerous {}%".format(dangerRatio)
+                value = f"Dangerous {dangerRatio}%"
                 color = "red"
             else:
-                value = "Snuggly {}%".format(100 - dangerRatio)
+                value = f"Snuggly {100 - dangerRatio}%"
                 color = "green"
 
         elif property == "iskDestroyed":
             label = "ISK Destroyed"
             value = _dict_safe_get(stats, "iskDestroyed")
             color = "success"
-            format = Shield.FORMAT_ISK
+            shield_format = Shield.FORMAT_ISK
 
         elif property == "iskLost":
             label = "ISK Lost"
             value = _dict_safe_get(stats, "iskLost")
             color = "critical"
-            format = Shield.FORMAT_ISK
+            shield_format = Shield.FORMAT_ISK
 
         elif property == "iskEff":
             destroyed = _dict_safe_get(stats, "iskDestroyed")
@@ -111,25 +111,25 @@ def zkb_stats(entity_type, entity_id, property):
                 color = "critical"
             else:
                 color = "success"
-            format = Shield.FORMAT_PERCENT
+            shield_format = Shield.FORMAT_PERCENT
 
         elif property == "memberCount":
             label = "Members"
             value = _dict_safe_get(stats, "info", "memberCount")
             color = "informational"
-            format = Shield.FORMAT_NUMBER
+            shield_format = Shield.FORMAT_NUMBER
 
         elif property == "shipsDestroyed":
             label = "Ships Destroyed"
             value = _dict_safe_get(stats, "shipsDestroyed")
             color = "success"
-            format = Shield.FORMAT_NUMBER
+            shield_format = Shield.FORMAT_NUMBER
 
         elif property == "shipsLost":
             label = "Ships Lost"
             value = _dict_safe_get(stats, "shipsLost")
             color = "critical"
-            format = Shield.FORMAT_NUMBER
+            shield_format = Shield.FORMAT_NUMBER
 
         elif property == "shipsEff":
             destroyed = _dict_safe_get(stats, "shipsDestroyed")
@@ -143,18 +143,20 @@ def zkb_stats(entity_type, entity_id, property):
                 color = "critical"
             else:
                 color = "success"
-            format = format = Shield.FORMAT_PERCENT
+            shield_format = shield_format = Shield.FORMAT_PERCENT
 
         else:
-            abort(404, "Invalid property: {}".format(property))
+            abort(404, f"Invalid property: {property}")
 
-        shield = Shield(label=label, message=value, color=color, format=format)
+        shield = Shield(
+            label=label, message=value, color=color, shield_format=shield_format
+        )
     except Exception:
         logging.exception("exception ocurred")
         raise
     else:
         response.content_type = "application/json"
-        response.add_header("Cache-Control", "max-age={}".format(Shield.CACHE_SECONDS))
+        response.add_header("Cache-Control", f"max-age={Shield.CACHE_SECONDS}")
         response.add_header("Access-Control-Allow-Origin", "*")
         response.add_header("Access-Control-Allow-Methods", "GET")
         logger.info("Sending response...")
