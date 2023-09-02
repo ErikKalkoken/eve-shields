@@ -7,7 +7,7 @@ name = "eve-shields"
 dynamic = ["version", "description"]
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 authors = [{ name = "Erik Kalkoken", email = "erik.kalkoken@gmail.com" }]
 classifiers = [
     "Environment :: Web Environment",
