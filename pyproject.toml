@@ -1,0 +1,43 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "eve-shields"
+dynamic = ["version", "description"]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.8"
+authors = [{ name = "Erik Kalkoken", email = "erik.kalkoken@gmail.com" }]
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: Bottle",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+dependencies = ["bottle>=0.12", "requests>=2.22"]
+
+[project.urls]
+Homepage = "https://github.com/ErikKalkoken/eve-shields"
+
+[tool.flit.module]
+name = "eveshields"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.pylint.'MASTER']
+ignore-patterns = ["__init__.py", "auth_hooks.py", "apps.py"]
+ignore-paths = ["^.*/tests/.*$", "^.*/migrations/.*$"]
+
+[tool.pylint.'BASIC']
+good-names = ["i", "j", "k", "ex"]
+
+[tool.pylint.'FORMAT']
+max-line-length = 120

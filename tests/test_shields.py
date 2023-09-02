@@ -1,14 +1,8 @@
 # unittest for Shield class
 
-import inspect
-import os
-import sys
 import unittest
 
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir + "/eveshields")
-from app import Shield
+from eveshields.shields import Shield
 
 
 class TestShield(unittest.TestCase):
@@ -17,14 +11,14 @@ class TestShield(unittest.TestCase):
         self.assertEqual(x.label, "hi")
         self.assertEqual(x.message, "sweet world")
         self.assertIsNone(x.color)
-        self.assertIsNone(x.format)
+        self.assertIsNone(x.shield_format)
 
     def test_create_full(self):
         x = Shield("hi", "sweet world", "orange", "isk")
         self.assertEqual(x.label, "hi")
         self.assertEqual(x.message, "sweet world")
         self.assertEqual(x.color, "orange")
-        self.assertEqual(x.format, "isk")
+        self.assertEqual(x.shield_format, "isk")
 
     def test_setters1(self):
         x = Shield("hi", "sweet world")
@@ -35,8 +29,8 @@ class TestShield(unittest.TestCase):
         self.assertEqual(x.message, 99)
         x.color = "red"
         self.assertEqual(x.color, "red")
-        x.format = "isk"
-        self.assertEqual(x.format, "isk")
+        x.shield_format = "isk"
+        self.assertEqual(x.shield_format, "isk")
 
     def test_set_message(self):
         x = Shield("hi", "sweet world", "orange", "isk")
@@ -48,7 +42,7 @@ class TestShield(unittest.TestCase):
     def test_set_format(self):
         x = Shield("hi", "sweet world")
         with self.assertRaises(ValueError):
-            x.format = "xyz"
+            x.shield_format = "xyz"
 
     def test_get_dict(self):
         x = Shield("hi", "sweet world", "orange")
@@ -65,11 +59,11 @@ class TestShield(unittest.TestCase):
 
     def test__format_number(self):
         x = Shield("hi", "sweet world")
-        self.assertEqual(x._format_number(555), "555")
-        self.assertEqual(x._format_number(1570), "1.6k")
-        self.assertEqual(x._format_number(1570000), "1.6m")
-        self.assertEqual(x._format_number(1570000000), "1.6b")
-        self.assertEqual(x._format_number(1570000000000), "1.6t")
+        self.assertEqual(x._humanize_amount(555), "555")
+        self.assertEqual(x._humanize_amount(1570), "1.6k")
+        self.assertEqual(x._humanize_amount(1570000), "1.6m")
+        self.assertEqual(x._humanize_amount(1570000000), "1.6b")
+        self.assertEqual(x._humanize_amount(1570000000000), "1.6t")
 
 
 if __name__ == "__main__":
