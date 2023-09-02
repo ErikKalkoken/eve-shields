@@ -51,95 +51,7 @@ def zkb_stats(entity_type, entity_id, topic):
         entity_type_zkb = entity_type_map[entity_type]
 
     stats = _fetch_zkb_stats(entity_id, entity_type_zkb)
-
-    # generating requested shield
-    if topic == "activePvpChars":
-        label = "Active PVP chars"
-        value = _dict_safe_get(stats, "activepvp", "characters", "count")
-        color = "informational"
-        shield_format = Shield.FORMAT_NUMBER
-
-    elif topic == "corpCount":
-        label = "Corporations"
-        value = _dict_safe_get(stats, "info", "corpCount")
-        color = "informational"
-        shield_format = Shield.FORMAT_NUMBER
-
-    elif topic == "dangerRatio":
-        danger_ratio = _dict_safe_get(stats, "dangerRatio")
-        label = "Danger"
-        shield_format = None
-        if danger_ratio > 50:
-            value = f"Dangerous {danger_ratio}%"
-            color = "red"
-        else:
-            value = f"Snuggly {100 - danger_ratio}%"
-            color = "green"
-
-    elif topic == "iskDestroyed":
-        label = "ISK Destroyed"
-        value = _dict_safe_get(stats, "iskDestroyed")
-        color = "success"
-        shield_format = Shield.FORMAT_ISK
-
-    elif topic == "iskLost":
-        label = "ISK Lost"
-        value = _dict_safe_get(stats, "iskLost")
-        color = "critical"
-        shield_format = Shield.FORMAT_ISK
-
-    elif topic == "iskEff":
-        destroyed = _dict_safe_get(stats, "iskDestroyed")
-        lost = _dict_safe_get(stats, "iskLost")
-        label = "ISK Efficiency"
-        if destroyed + lost > 0:
-            value = destroyed / (destroyed + lost) * 100
-        else:
-            value = 0
-        if value < 50:
-            color = "critical"
-        else:
-            color = "success"
-        shield_format = Shield.FORMAT_PERCENT
-
-    elif topic == "memberCount":
-        label = "Members"
-        value = _dict_safe_get(stats, "info", "memberCount")
-        color = "informational"
-        shield_format = Shield.FORMAT_NUMBER
-
-    elif topic == "shipsDestroyed":
-        label = "Ships Destroyed"
-        value = _dict_safe_get(stats, "shipsDestroyed")
-        color = "success"
-        shield_format = Shield.FORMAT_NUMBER
-
-    elif topic == "shipsLost":
-        label = "Ships Lost"
-        value = _dict_safe_get(stats, "shipsLost")
-        color = "critical"
-        shield_format = Shield.FORMAT_NUMBER
-
-    elif topic == "shipsEff":
-        destroyed = _dict_safe_get(stats, "shipsDestroyed")
-        lost = _dict_safe_get(stats, "shipsLost")
-        label = "Ships Efficiency"
-        if destroyed + lost > 0:
-            value = destroyed / (destroyed + lost) * 100
-        else:
-            value = 0
-        if value < 50:
-            color = "critical"
-        else:
-            color = "success"
-        shield_format = shield_format = Shield.FORMAT_PERCENT
-
-    else:
-        abort(404, f"Invalid property: {topic}")
-
-    shield = Shield(
-        label=label, message=value, color=color, shield_format=shield_format
-    )
+    shield = _generate_shield(topic, stats)
 
     response.content_type = "application/json"
     response.add_header("Cache-Control", f"max-age={Shield.CACHE_SECONDS}")
@@ -161,6 +73,98 @@ def _fetch_zkb_stats(entity_id, entity_type_zkb):
     stats = res.json()
     logger.debug("Stats received from ZKB")
     return stats
+
+
+# pylint: disable = too-many-statements
+def _generate_shield(topic, stats):
+    """Generate requested shield."""
+
+    match topic:
+        case "activePvpChars":
+            label = "Active PVP chars"
+            value = _dict_safe_get(stats, "activepvp", "characters", "count")
+            color = "informational"
+            shield_format = Shield.FORMAT_NUMBER
+
+        case "corpCount":
+            label = "Corporations"
+            value = _dict_safe_get(stats, "info", "corpCount")
+            color = "informational"
+            shield_format = Shield.FORMAT_NUMBER
+
+        case "dangerRatio":
+            danger_ratio = _dict_safe_get(stats, "dangerRatio")
+            label = "Danger"
+            shield_format = None
+            if danger_ratio > 50:
+                value = f"Dangerous {danger_ratio}%"
+                color = "red"
+            else:
+                value = f"Snuggly {100 - danger_ratio}%"
+                color = "green"
+
+        case "iskDestroyed":
+            label = "ISK Destroyed"
+            value = _dict_safe_get(stats, "iskDestroyed")
+            color = "success"
+            shield_format = Shield.FORMAT_ISK
+
+        case "iskLost":
+            label = "ISK Lost"
+            value = _dict_safe_get(stats, "iskLost")
+            color = "critical"
+            shield_format = Shield.FORMAT_ISK
+
+        case "iskEff":
+            destroyed = _dict_safe_get(stats, "iskDestroyed")
+            lost = _dict_safe_get(stats, "iskLost")
+            label = "ISK Efficiency"
+            if destroyed + lost > 0:
+                value = destroyed / (destroyed + lost) * 100
+            else:
+                value = 0
+            if value < 50:
+                color = "critical"
+            else:
+                color = "success"
+            shield_format = Shield.FORMAT_PERCENT
+
+        case "memberCount":
+            label = "Members"
+            value = _dict_safe_get(stats, "info", "memberCount")
+            color = "informational"
+            shield_format = Shield.FORMAT_NUMBER
+
+        case "shipsDestroyed":
+            label = "Ships Destroyed"
+            value = _dict_safe_get(stats, "shipsDestroyed")
+            color = "success"
+            shield_format = Shield.FORMAT_NUMBER
+
+        case "shipsLost":
+            label = "Ships Lost"
+            value = _dict_safe_get(stats, "shipsLost")
+            color = "critical"
+            shield_format = Shield.FORMAT_NUMBER
+
+        case "shipsEff":
+            destroyed = _dict_safe_get(stats, "shipsDestroyed")
+            lost = _dict_safe_get(stats, "shipsLost")
+            label = "Ships Efficiency"
+            if destroyed + lost > 0:
+                value = destroyed / (destroyed + lost) * 100
+            else:
+                value = 0
+            if value < 50:
+                color = "critical"
+            else:
+                color = "success"
+            shield_format = shield_format = Shield.FORMAT_PERCENT
+
+        case _:
+            abort(404, f"Invalid property: {topic}")  # raises exception
+
+    return Shield(label=label, message=value, color=color, shield_format=shield_format)
 
 
 if __name__ == "__main__":

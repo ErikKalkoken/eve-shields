@@ -1,6 +1,7 @@
 """Shield class for Eve Shields."""
 
 
+# pylint: disable = too-many-instance-attributes
 class Shield:
     """Defines a shield"""
 
