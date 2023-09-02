@@ -16,11 +16,11 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
-dependencies = ["bottle >= 0.12", "requests >= 2.22"]
+dependencies = ["bottle>=0.12", "requests>=2.22"]
 
 [project.urls]
 Homepage = "https://github.com/ErikKalkoken/eve-shields"
