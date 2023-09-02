@@ -2,7 +2,7 @@
 
 import unittest
 
-from eveshields.app import Shield
+from eveshields.shields import Shield
 
 
 class TestShield(unittest.TestCase):
