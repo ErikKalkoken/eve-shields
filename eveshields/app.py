@@ -2,7 +2,7 @@ import logging
 from json import dumps
 
 import requests
-from bottle import abort, default_app, request, response, route, run
+from bottle import abort, default_app, response, route, run
 
 logging.basicConfig(
     filename="app.log",
@@ -263,7 +263,7 @@ def zkb_stats(entity_type, entity_id, property):
             abort(404, "Invalid property: {}".format(property))
 
         shield = Shield(label=label, message=value, color=color, format=format)
-    except:
+    except Exception:
         logging.exception("exception ocurred")
         raise
     else:

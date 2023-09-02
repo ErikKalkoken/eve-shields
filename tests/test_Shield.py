@@ -1,14 +1,8 @@
 # unittest for Shield class
 
-import inspect
-import os
-import sys
 import unittest
 
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir + "/eveshields")
-from app import Shield
+from eveshields.app import Shield
 
 
 class TestShield(unittest.TestCase):

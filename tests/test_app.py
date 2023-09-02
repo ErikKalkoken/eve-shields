@@ -1,18 +1,12 @@
 # unittests for app module functions
 
-import inspect
-import os
-import sys
+import json
 import unittest
 from unittest.mock import Mock, patch
 
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0, parentdir + "/eveshields")
-import json
-
-import app
 import bottle
+
+from eveshields import app
 
 
 class TestZkbStats(unittest.TestCase):
@@ -28,7 +22,7 @@ class TestZkbStats(unittest.TestCase):
         mock.raise_for_status = Mock()
         cls.mock_get = mock
 
-    @patch("app.requests.get")
+    @patch("eveshields.app.requests.get")
     def test_activeP_pvp_chars(self, mock):
         # replacing requests.get with mock method
         mock.return_value = self.mock_get
@@ -46,7 +40,7 @@ class TestZkbStats(unittest.TestCase):
             },
         )
 
-    @patch("app.requests.get")
+    @patch("eveshields.app.requests.get")
     def test_corp_count(self, mock):
         # replacing requests.get with mock method
         mock.return_value = self.mock_get
@@ -64,7 +58,7 @@ class TestZkbStats(unittest.TestCase):
             },
         )
 
-    @patch("app.requests.get")
+    @patch("eveshields.app.requests.get")
     def test_danger_ratio(self, mock):
         # replacing requests.get with mock method
         mock.return_value = self.mock_get
@@ -82,7 +76,7 @@ class TestZkbStats(unittest.TestCase):
             },
         )
 
-    @patch("app.requests.get")
+    @patch("eveshields.app.requests.get")
     def test_isk_destroyed(self, mock):
         # replacing requests.get with mock method
         mock.return_value = self.mock_get
@@ -100,7 +94,7 @@ class TestZkbStats(unittest.TestCase):
             },
         )
 
-    @patch("app.requests.get")
+    @patch("eveshields.app.requests.get")
     def test_isk_lost(self, mock):
         # replacing requests.get with mock method
         mock.return_value = self.mock_get
@@ -118,7 +112,7 @@ class TestZkbStats(unittest.TestCase):
             },
         )
 
-    @patch("app.requests.get")
+    @patch("eveshields.app.requests.get")
     def test_isk_eff(self, mock):
         # replacing requests.get with mock method
         mock.return_value = self.mock_get
@@ -136,7 +130,7 @@ class TestZkbStats(unittest.TestCase):
             },
         )
 
-    @patch("app.requests.get")
+    @patch("eveshields.app.requests.get")
     def test_member_count(self, mock):
         # replacing requests.get with mock method
         mock.return_value = self.mock_get
@@ -154,7 +148,7 @@ class TestZkbStats(unittest.TestCase):
             },
         )
 
-    @patch("app.requests.get")
+    @patch("eveshields.app.requests.get")
     def test_ships_destroyed(self, mock):
         # replacing requests.get with mock method
         mock.return_value = self.mock_get
@@ -172,7 +166,7 @@ class TestZkbStats(unittest.TestCase):
             },
         )
 
-    @patch("app.requests.get")
+    @patch("eveshields.app.requests.get")
     def test_ships_lost(self, mock):
         # replacing requests.get with mock method
         mock.return_value = self.mock_get
@@ -190,7 +184,7 @@ class TestZkbStats(unittest.TestCase):
             },
         )
 
-    @patch("app.requests.get")
+    @patch("eveshields.app.requests.get")
     def test_ships_eff(self, mock):
         # replacing requests.get with mock method
         mock.return_value = self.mock_get
@@ -209,14 +203,14 @@ class TestZkbStats(unittest.TestCase):
         )
 
     # invalid properties should raise a HTTP error
-    @patch("app.requests.get")
+    @patch("eveshields.app.requests.get")
     def test_invalid_property(self, mock):
         # replacing requests.get with mock method
         mock.return_value = self.mock_get
 
         # performing tests
         with self.assertRaises(bottle.HTTPError):
-            x = app.zkb_stats("xyz", "0", "shipsDestroyed")
+            app.zkb_stats("xyz", "0", "shipsDestroyed")
 
 
 class TestHelperFunctions(unittest.TestCase):

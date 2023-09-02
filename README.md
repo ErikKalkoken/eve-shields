@@ -98,11 +98,11 @@ https://eve-shields.kalkoken.net/zkb-stats/{entity-type}/{entity-id}/{shield-nam
 - `entity-type`: name of the EVE entity type. The following types are supported:
   - alliance
   - character
-  - corporation  
+  - corporation
   - faction
   - region
   - shipGroup
-  - shipType  
+  - shipType
   - solarSystem
 - `entity-id`: a valid EVE ID corresponding to the entity type, e.g. `498125261` for Test Alliance Please Ignore.
 - `shield-name`: name of the shield to create. Note that not all shields are available for every entity type, e.g. there is no member count for ships. See section **Shields** for a list of all shield names.
